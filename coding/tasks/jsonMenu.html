@@ -1,0 +1,164 @@
+<!doctype HTML>
+<html>
+    <head>
+        <title>JSON Menu Test</title>
+    </head>
+    <body>
+        <ul id="menu"></ul>
+        <script>
+            /*
+            Create a blank web page and load this JSON with JavaScript
+            Use the loaded JSON to create a tree menu taking into consideration this JSON structure description:
+            o    Id: id of the element
+            o    Leaf: If true, this is an end-node
+            o    Description: Text displayed in the menu
+            o    Link: Not applicable
+            o    Content Explained later
+            o    CssClass: CSS class of the menu element
+            o    Menu: If available contains the submenu nodes
+
+            */
+
+            var json = {
+               "menu":[
+                  {
+                     "id":"contact",
+                     "leaf":true,
+                     "description":"Contact Us",
+                     "link":"",
+                     "content":"contactUs.html",
+                     "cssClass":"static-content",
+                     "menu":null
+                  },
+                  {
+                     "id":"rules",
+                     "leaf":false,
+                     "description":"Sports Betting Rules",
+                     "link":"",
+                     "content":"",
+                     "cssClass":"",
+                     "menu":[
+                        {
+                           "id":"types",
+                           "leaf":true,
+                           "description":"Wager Types",
+                           "link":"",
+                           "content":"wagerTypes.html",
+                           "cssClass":"static-content wager-types",
+                           "menu":null
+                        },
+                        {
+                           "id":"odds",
+                           "leaf":true,
+                           "description":"Odds & Lines",
+                           "link":"",
+                           "content":"oddsAndLines.html",
+                           "cssClass":"static-content",
+                           "menu":null
+                        },
+                        {
+                           "id":"policies",
+                           "leaf":true,
+                           "description":"Rules & Policies",
+                           "link":"",
+                           "content":"rulesAndPolicies.html",
+                           "cssClass":"static-content rules-policies",
+                           "menu":null
+                        },
+                        {
+                           "id":"bonuses",
+                           "leaf":true,
+                           "description":"Sports Bonuses",
+                           "link":"",
+                           "content":"sportsBonuses.html",
+                           "cssClass":"static-content",
+                           "menu":null
+                        }
+                     ]
+                  },
+                  {
+                     "id":"conditions",
+                     "leaf":false,
+                     "description":"Terms & Conditions",
+                     "link":"",
+                     "content":"",
+                     "cssClass":"",
+                     "menu":[
+                        {
+                           "id":"termsOfService",
+                           "leaf":true,
+                           "description":"Terms of Service",
+                           "link":"",
+                           "content":"termsOfService.html",
+                           "cssClass":"static-content",
+                           "menu":null
+                        },
+                        {
+                           "id":"privacy",
+                           "leaf":true,
+                           "description":"Privacy Policy",
+                           "link":"",
+                           "content":"privacy.html",
+                           "cssClass":"static-content",
+                           "menu":null
+                        }
+                     ]
+                  },
+                  {
+                     "id":"view",
+                     "leaf":true,
+                     "description":"View in: Mobile | Full Site",
+                     "link":"",
+                     "content":"view.html",
+                     "cssClass":"static-content",
+                     "menu":null
+                  }
+               ]
+            }
+
+            function leader(path,cb){
+                // var xmlhttp = new XMLHttpRequest();
+                // xmlhttp.onreadystatechange = function() {
+                //     if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                //         cb(JSON.parse(xmlhttp.responseText));
+                //     }
+                // }
+                // xmlhttp.open("GET",path,true);
+                // xmlhttp.send();
+
+                cb(json);
+            };
+
+            function makeTree(data){
+                result = '';
+
+                for (var i in data.menu){
+                    var item = data.menu[i];
+                    var subTgl = !item.leaf ? 'onclick="toggle(this)' : '';
+                    result += '<li id="'+item.id+'" class="'+item.cssClass+'"><a href="#" '+subTgl+'">'+item.description+'</a>'
+                    if(!item.leaf) {
+                        result += '<ul style="display:none;">' + makeTree(item) + '</ul>';
+                    }
+                    result += '</li>';
+                }
+
+                return result;
+            }
+
+            leader('menu.json', function(data){
+
+                document.getElementById('menu').innerHTML = makeTree(data);
+
+            });
+
+            function toggle(btn){
+                var d = btn.nextSibling.style.display;
+                btn.nextSibling.style.display = d == 'none' ? 'block' : 'none';
+                
+            };
+
+            
+
+        </script>
+    </body>
+</html>
