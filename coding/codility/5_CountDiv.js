@@ -1,4 +1,4 @@
-// ŹLE W CHUJ!!
+// very bad
 function solution(A,B,K) {
 
 	return Math.ceil(B/K-A/K);
